@@ -11,7 +11,7 @@ class Autoloader
     /**
      * @var array   Namespace mapping
      */
-    protected static $ns_map = [];
+    protected $ns_map = [];
 
     /**
      * Autoloader constructor.
@@ -41,9 +41,9 @@ class Autoloader
      * @param string $namespace Root namespace
      * @param string $root_path Namespace root path
      */
-    public static function addNamespacePath(string $namespace, string $root_path)
+    public function addNamespacePath(string $namespace, string $root_path)
     {
-        self::$ns_map[$namespace] = $root_path;
+        $this->ns_map[$namespace] = $root_path;
     }
 
     /**
@@ -66,17 +66,21 @@ class Autoloader
     protected function getClassPath(string $classname): string
     {
         $class_path = $classname . '.php';
-        if (!empty(self::$ns_map)) {
-            foreach (self::$ns_map as $ns => $path) {
+        if (!empty($this->ns_map)) {
+            foreach ($this->ns_map as $ns => $path) {
                 $lookup_pattern = sprintf('/^%s/', $ns);
                 if (preg_match($lookup_pattern, $classname)) {
                     $class_path = preg_replace($lookup_pattern, $path, $class_path);
+                    var_dump($class_path);
                     break;
                 }
             }
         }
 
-        return realpath(str_replace('\\', DIRECTORY_SEPARATOR, $class_path));
+        $realpath_value = realpath(str_replace('\\', DIRECTORY_SEPARATOR, $class_path));
+
+		var_dump($realpath_value);
+        return $realpath_value;
     }
 }
 

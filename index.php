@@ -7,6 +7,9 @@ require_once "Autoloader.php";
 
 // Example of usage addNamespacePath:
 // Autoloader::addNamespacePath('MindK', 'vendor/mindk/src');
+$autoloader_class = Autoloader::getInstance();
+$autoloader_class->addNamespacePath('TestClass', 'External/Mindk/Superpuperpackage/TestClass');
+var_dump($autoloader_class);
 
 try {
     $config = ConfigSingleton::getInstance();
@@ -18,6 +21,9 @@ try {
 } catch (IncorrectAdapterNameException $e) {
     echo $e->getMessage();
 }
+
+$test_class = new TestClass();
+$test_class->echoSomething('test');
 
 
 function debug($value)
